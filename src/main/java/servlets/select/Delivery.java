@@ -1,0 +1,30 @@
+package servlets.select;
+
+import dao.DeliveriesDAO;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import java.util.ArrayList;
+
+
+@WebServlet("/SelectDelivery")
+public class Delivery extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        ArrayList<models.Delivery> deliveries = DeliveriesDAO.selectAll();
+        request.setAttribute("deliveries", deliveries);
+
+        try {
+            getServletContext().getRequestDispatcher("/views/deliveries/show.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
